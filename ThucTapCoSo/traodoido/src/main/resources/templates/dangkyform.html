@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Đăng ký</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link
+	href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
+	rel="stylesheet">
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/login_assets/css/style.css">
+
+</head>
+<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-3">
+					<h2 class="heading-section" style="color: #00A3FF;">
+						<a href="/trangchu">Trao Đổi Đồ</a>
+					</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-12 col-lg-15">
+					<div class="wrap d-md-flex">
+						<div class="img"
+							style="background-image: url(/login_assets/images/bg1.png);">
+						</div>
+						<div class="login-wrap p-4 p-md-5">
+							<div class="d-flex">
+								<div class="w-100">
+									<h3 class="mb-4" style="color: #00A3FF;">Đăng ký</h3>
+								</div>
+								<div class="w-100">
+									<p class="social-media d-flex justify-content-end">
+										<a href="https://www.facebook.com/darkshadowdemon200x" target="_blank"
+											class="social-icon d-flex align-items-center justify-content-center"><span
+											class="fa fa-facebook"></span></a> <a href="#"
+											class="social-icon d-flex align-items-center justify-content-center"><span
+											class="fa fa-twitter"></span></a>
+									</p>
+								</div>
+							</div>
+							<form action="/dangky" class="signin-form" method="POST" name="myForm" onsubmit="return validateForm()">
+								<div class="form-group mb-3">
+									<label class="label" for="name">Tài khoản</label> <input
+										name="username" type="text" class="form-control"
+										placeholder="Tài khoản" required>
+								</div>
+								<div class="form-group mb-3">
+									<label class="label" for="password">Mật khẩu</label> <input
+										type="password" class="form-control" placeholder="Mật khẩu"
+										name="password" required>
+								</div>
+								<div class="form-group mb-3">
+									<label class="label" for="passwordRetype">Nhập lại mật
+										khẩu</label> <input name="retypepassword" type="password"
+										class="form-control" placeholder="Nhập lại mật khẩu" required>
+								</div>
+								<div class="form-group">
+									<button type="submit"
+										class="form-control btn btn-primary rounded submit px-3">Đăng
+										ký</button>
+										<div th:if="${thongBao}" th:text="${thongBao}" class="alert" style="color:red"></div>
+								</div>
+								<div class="form-group d-md-flex">
+									<div class="w-50 text-left"></div>
+									<div class="w-50 text-md-right">
+										<a href="#">Quên mật khẩu?</a>
+									</div>
+								</div>
+							</form>
+							<p class="text-center">
+								Đã có tài khoản? <a th:href="@{dangnhap}">Đăng nhập!</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="/login_assets/js/jquery.min.js"></script>
+	<script src="/login_assets/js/popper.js"></script>
+	<script src="/login_assets/js/bootstrap.min.js"></script>
+	<script src="/login_assets/js/main.js"></script>
+	<script>
+		function validateForm() {
+			var username = document.forms["myForm"]["username"].value;
+			var password = document.forms["myForm"]["password"].value;
+			var retypepassword = document.forms["myForm"]["retypepassword"].value;
+
+			if (username == "" || password == "" || retypepassword == "") {
+				alert("Vui lòng nhập đầy đủ thông tin.");
+				return false;
+			}
+
+			if (password != retypepassword) {
+				alert("Mật khẩu nhập lại không trùng khớp.");
+				return false;
+			}
+		}
+	</script>
+
+</body>
+</html>
+

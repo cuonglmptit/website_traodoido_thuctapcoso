@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="reverse"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="true"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="reverse"/>
+			<item value="menuS"/>
+			<item value="menu"/>
+			<item value="Chưa có tin nhắn trong giao dịch, nhắn ngay tại đây!"/>
+			<item value="inside"/>
+			<item value="Người đăng"/>
+			<item value="&apos; Avaiable&apos; : &apos;Unavaiable&apos;&quot;"/>
+			<item value="Avaiable"/>
+			<item value="&lt;a class=&quot;menu__list-item-link&quot; href=&quot;#&quot;&gt;Đồ ngang giá&lt;/a&gt;"/>
+			<item value="href=&quot;yourtransaction&quot;"/>
+			<item value="tradeable"/>
+			<item value="href=&quot;trangchu&quot;"/>
+			<item value="href=&quot;/trangchu&quot;"/>
+			<item value="trangchu"/>
+			<item value="trangchuhu"/>
+		</list>
+		<list key="replacehistory">
+			<item value="Không có tin nhắn nào!"/>
+			<item value="Không có tin nhắn trong giao dịch!"/>
+			<item value="&apos; Available&apos; : &apos;Unavailable&apos;&quot;"/>
+			<item value="&lt;a class=&quot;menu__list-item-link&quot; href=&quot;/donganggia&quot;&gt;Đồ ngang giá&lt;/a&gt;"/>
+			<item value="href=&quot;/yourtransaction&quot;"/>
+			<item value="href=&quot;/trangchu&quot;"/>
+			<item value="Đồ điện tử"/>
+			<item value="/yourtransaction"/>
+			<item value="tradeitem"/>
+			<item value="/"/>
+			<item value="Category"/>
+			<item value="categorie"/>
+			<item value="1px solid #01a0e4"/>
+			<item value="1px solid rgb(0, 255, 255)"/>
+			<item value="1px solid "/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="1110"/>
+		<item key="DIALOG_Y_ORIGIN" value="472"/>
+		<item key="DIALOG_WIDTH" value="322"/>
+		<item key="DIALOG_HEIGHT" value="391"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+</section>

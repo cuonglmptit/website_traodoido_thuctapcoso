@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-free-6.4.0-web/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="grid">
+                <nav class="header__navbar">
+                    <ul class="grid header__navbar-list" style="margin-right: 15%;">
+                        <li class="header__navbar-item" style="position: relative; top: -45%;">
+                            <a href="/trangchu" class="header__navbar-item-link" style="font-size: 3em; font-weight: 800;">
+                                <img src="/assets/img/logo.png" alt="logo" style="position: relative; top: -15px; left: 10px;">
+                                Trao đổi đồ
+                            </a>
+                        </li>
+                        <li class="header__navbar-item">
+                            <input type="search" class="header__navbar-item-search" placeholder="Tìm món bạn muốn">
+                            <button type="submit" class="searchButton"><i class="fa-solid fa-magnifying-glass" style="color: #009dff;"></i></button>
+                        </li>
+                        <li class="header__navbar-item">
+                            <a th:href="@{/post/{iid}(iid = -1)}" class="header__navbar-item-link" >
+                                <i class="fa-solid fa-angles-up" style="font-size: 1.5em; position: relative; left: 50%; top: -25px;"></i>
+                                Post bài
+                            </a>
+                        </li>
+                        <li class="header__navbar-item">
+                            <a href="trangchu" class="header__navbar-item-link">
+                                <i class="fa-regular fa-envelope" style="font-size: 1.5em; position: relative; left: 50%; top: -25px;"></i>Tin nhắn
+                            </a>
+                        </li>
+                        <li class="header__navbar-item" style="position: absolute; left: 74%;">
+                            <a href="/account/profile" class="header__navbar-item-link">
+                                <i class="fa-regular fa-circle-user" style="font-size: 1.5em; position: relative; left: 50%; top: -25px;"></i>
+							<span th:text="${session.user != null ? session.user.uname : 'Tài khoản'}" style="position: relative; left: -3%">Tài khoản</span>
+                            </a>
+                        </li>
+                        <li class="header__navbar-item" th:if="${session.user != null}" style="position: absolute; right: 1%">
+                            <a href="/dangxuat" class="header__navbar-item-link">
+                                <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 1.5em; position: relative; left: 50%; top: -25px;"></i>
+							<span style="position: relative; left: -5%">Đăng xuất</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="menu header__navbar">
+            <ul class="menu__list grid">
+                <li class="menu__list-item">
+                    <a class="menu__list-item-link" href="#">Thời trang</a>
+                </li>
+                <li class="menu__list-item">
+                    <a class="menu__list-item-link" href="#">Đồ sưu tập</a>
+                </li>
+                <li class="menu__list-item">
+                    <a class="menu__list-item-link" href="#">Trade only</a>
+                </li>
+                <li class="menu__list-item">
+                    <a class="menu__list-item-link" href="#">Đồ ngang giá</a>
+                </li>
+                <li class="menu__list-item">
+                    <a class="menu__list-item-link" href="#">Danh mục khác</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="grid" style="margin-bottom: -10px; margin-top: 5px; padding-inline-start: 30px;"><a href="/trangchu"
+                class="grid" style="color: #009dff; font-size: 1.8rem; font-weight: 500;">Trang chủ</a></div>
+
+
+        <div class="container grid">
+            <span class="menuSpan" th:text="${iid} == '-1' ? 'ĐĂNG BÀI' : 'SỬA BÀI'"></span>
+            <br>
+			<span class="menuSpan" th:text=${thongBao} style="font-style: italic; font-weight: normal;"></span>
+            <div class="container__item">
+            	<form id="deleteForm" th:action="@{/post/delete/{iid}(iid=${item.iid})}" method="POST" th:if="${item.iid > 0}">
+  					<input type="hidden" name="_method" value="DELETE">	
+            		<input type="number" th:field="${item.iid}" hidden="">
+            		<input type="number" th:field="${item.UserID}" hidden="">
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button class="btn btn-danger" type="submit" style="font-size: large; font-weight: 700; width: 100px; height: 40px;">Xóa bài</button>
+                    </div>
+            	</form>
+                <form th:object="${item}" th:action="@{/post/save/{iid}(iid=${item.iid})}" th:method="${iid == '-1' ? 'POST' : 'PUT'}" enctype="multipart/form-data">
+                	<input type="number" th:field="${item.iid}" hidden="">
+                	<input type="number" th:field="${item.UserID}" hidden="">
+                    <h1 class="menuSpan" style="padding: 20px; font-size: 30px;"><input type="text" name="title"
+                            placeholder="Tiêu đề sản phẩm" style="width: 100%; box-sizing: border-box;" th:field="${item.Title}" th:required="${iid == '-1'}"></h1>
+                    <div class="inFormation">
+                    <input name=img1 th:field="${item.Img1}" hidden="">
+                    <input name=img2 th:field="${item.Img2}" hidden="">
+                    <input name=img3 th:field="${item.Img3}" hidden="">
+                        <div class="inFormation1">
+                            <div th:style="${item.img1 != null} ? 'background-image: url(' + ${item.img1} + ')' : ''">
+                                <label for="fimg1">Upload ảnh 1:</label>
+                                <input name=fimg1 type="file" accept="image/*" th:required="${iid == '-1'}"><br>
+                            </div>
+
+                            <div th:style="${item.img2 != null} ? 'background-image: url(' + ${item.img2} + ')' : ''">
+                                <label for="fimg2">Upload ảnh 2:</label>
+                                <input name=fimg2 type="file" accept="image/*" th:required="${iid == '-1'}"><br>
+                            </div>
+
+                            <div th:style="${item.img3 != null} ? 'background-image: url(' + ${item.img3} + ')' : ''">
+                                <label for="fimg3">Upload ảnh 3:</label>
+                                <input name=fimg3 type="file" accept="image/*" th:required="${iid == '-1'}"><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="overlay">
+                        <div id="imagePreview">
+                        </div>
+                        <button id="closeButton">Close</button>
+                    </div>
+
+                    <div class="inFormation">
+                        <div class="inFormation2">
+                            <div
+                                style="display: flex; justify-content: flex-start; align-items: center; height: max-content; padding-top: 10px;">
+                                <label for="accepttype">Loại giao dịch:</label>
+									<select name="accepttype" id="accepttype" th:field="${item.AcceptType}">
+									    <option value="1" th:selected="${item.AcceptType == '1'}">Chỉ trade</option>
+									    <option value="2" th:selected="${item.AcceptType == '2'}">Chỉ bán</option>
+									    <option value="3" th:selected="${item.AcceptType == '3'}">Bán + trade</option>
+									</select>
+                            </div>
+                            <div>
+                                <label for="quantity">Số lượng:</label>
+                                <input type="number" id="quantity" name="quantity" min="0" required th:field="${item.Avaiable}">
+                            </div>
+
+                            <div id="divSellPrice">
+                                <label for="sellPrice">Giá bán:</label>
+                                <input type="number" id="sellPrice" name="sellPrice" min="0" th:field="${item.SellPrice}">
+                            </div>
+                            <div id="divTradePrice">
+                                <label for="tradePrice">Giá trade:</label>
+                                <input type="number" id="tradePrice" name="tradePrice" min="0" th:field="${item.TradePrice}">
+                            </div>
+                            <div id="divTradeRange">
+                                <label for="tradeRange">Giá trade dao động:</label>
+                                <input type="number" id="tradeRange" name="tradeRange" min="0" th:field="${item.TradeRange}">
+                            </div>
+
+                            <div>
+                                <label for="category">Danh mục:</label>
+                                <select id="category" name="category" required th:field="${item.Category}">
+                                    <option value="0" th:selected="${item.Category == '0'}">Danh mục khác</option>
+                                    <option value="1" th:selected="${item.Category == '1'}">Thời trang</option>
+                                    <option value="2" th:selected="${item.Category == '2'}">Đồ sưu tập</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deScription">
+                        <h1>Mô tả chi tiết món đồ của bạn:</h1>
+                        <textarea name="description" id="description" rows="7" placeholder="Mô tả chi tiết..."  required
+                           th:field="${item.Descr}" style="width: 100%; font-size: 18px; line-height: 1.5;"></textarea>
+                    </div>
+                    <div style="text-align: center; padding-top: 10px; padding-bottom: 10px;">
+                        <button type="submit" class="btn btn-primary" style="font-size: large; font-weight: 700; width: 120px; height: 40px;">
+                        <span th:text="${iid} == '-1' ? 'ĐĂNG BÀI' : 'SỬA BÀI'"></span>
+                        <i class="fa-solid fa-angles-up"></i></button>
+                    </div> 
+                </form>
+            </div>
+        </div>
+        <footer class="footer">
+            <!-- Grid container -->
+            <div class="container p-4" style="background-color: rgb(0, 174, 255, 0.5);">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">Links</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#!" class="text-dark">Link 1</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 2</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 3</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 4</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase mb-0">Links</h5>
+
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#!" class="text-dark">Link 1</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 2</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 3</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 4</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">Links</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#!" class="text-dark">Link 1</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 2</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 3</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 4</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase mb-0">Links</h5>
+
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#!" class="text-dark">Link 1</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 2</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 3</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-dark">Link 4</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+    window.onload = function () {
+    	const selectedValue = acceptTypeSelect.value;	
+        batLuaChon(selectedValue);
+    }
+    const sellPriceDiv = document.querySelector('#divSellPrice');
+    const tradePriceDiv = document.querySelector('#divTradePrice');
+    const tradeRangeDiv = document.querySelector('#divTradeRange');
+    const sellPriceInput = document.querySelector('#sellPrice');
+    const tradePriceInput = document.querySelector('#tradePrice');
+    const tradeRangeInput = document.querySelector('#tradeRange');
+
+    // Bắt sự kiện "change" trên select
+    function batLuaChon(selectedValue) {
+    	if (selectedValue === '1') { // Chỉ trade
+            sellPriceDiv.style.display = 'none';
+            tradePriceDiv.style.display = 'flex';
+            tradeRangeDiv.style.display = 'flex';
+
+            sellPriceInput.disabled = true;
+            tradePriceInput.disabled = false;
+            tradeRangeInput.disabled = false;
+
+            sellPriceInput.required = false;
+            tradePriceInput.required = true;
+            tradeRangeInput.required = true;
+        } else if (selectedValue === '2') { // Chỉ bán
+            tradePriceDiv.style.display = 'none';
+            tradeRangeDiv.style.display = 'none';
+            sellPriceDiv.style.display = 'flex';
+
+            tradePriceInput.disabled = true;
+            tradeRangeInput.disabled = true;
+            sellPriceInput.disabled = false;
+
+            tradePriceInput.required = false;
+            tradeRangeInput.required = false;
+            sellPriceInput.required = true;
+        } else if (selectedValue === '3') { // Bán + trade
+            sellPriceDiv.style.display = 'flex';
+            tradePriceDiv.style.display = 'flex';
+            tradeRangeDiv.style.display = 'flex';
+
+            sellPriceInput.disabled = false;
+            tradePriceInput.disabled = false;
+            tradeRangeInput.disabled = false;
+
+            sellPriceInput.required = true;
+            tradePriceInput.required = true;
+            tradeRangeInput.required = true;
+        }
+	}
+    const acceptTypeSelect = document.querySelector('#accepttype');
+    acceptTypeSelect.addEventListener('change', () => {
+        const selectedValue = acceptTypeSelect.value;
+        batLuaChon(selectedValue);
+    });
+    </script>
+    <script>   
+        const overlay = document.getElementById("overlay");
+        const imagePreview = document.getElementById("imagePreview");
+        const closeButton = document.getElementById("closeButton");	
+        
+		
+        document.querySelectorAll('input[type="file"]').forEach((div) => {
+            div.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        });
+
+
+        document.querySelectorAll('input[type="file"]').forEach((input) => {
+            input.addEventListener("change", (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.addEventListener("load", (event) => {
+                    const url = event.target.result;
+                    input.parentNode.style.backgroundImage = `url(${url})`;
+                    // Hiển thị ảnh được chọn khi bấm vào
+                    input.parentNode.addEventListener("click", () => {
+                        imagePreview.style.backgroundImage = `url(${url})`;
+                        overlay.style.display = "flex";
+                    });
+                });
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Tắt khung mờ khi bấm nút tắt hoặc click bên ngoài khung mờ
+        function closeOverlay() {
+            overlay.style.display = "none";
+        }
+
+        closeButton.addEventListener("click", closeOverlay);
+        overlay.addEventListener("click", closeOverlay);
+        imagePreview.addEventListener("click", (event) => {
+            event.stopPropagation(); // Ngăn chặn sự kiện click lan ra khỏi phần tử imagePreview
+        });
+    </script>
+</body>
+
+</html>
